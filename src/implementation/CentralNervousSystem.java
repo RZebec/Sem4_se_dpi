@@ -1,5 +1,7 @@
 package implementation;
 
+import implementation.cancerstate.S3;
+
 /**
  * @author RZE
  * @version 1.0
@@ -7,16 +9,19 @@ package implementation;
  */
 public class CentralNervousSystem implements ILungListener {
 	private Brain brain;
-	private String leftLungState;
-	private String rightLungState;
+	private boolean oneLungHastAlreadyReachedS3 = false;
 
 	public CentralNervousSystem(Brain brain) {
 		this.brain = brain;
-		this.leftLungState = "S0";
-		this.rightLungState = "S0";
 	}
 
 	public void lungStatusChange(ICancerState newState) {
+		if(newState instanceof S3) {
+			if(oneLungHastAlreadyReachedS3)
+				this.brain.totalLungFailure();
+			else
+				oneLungHastAlreadyReachedS3 = true;
+		}
 
 	}
 }

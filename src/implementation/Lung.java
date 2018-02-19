@@ -1,23 +1,28 @@
 package implementation;
 
+import implementation.cancerstate.S0;
 import implementation.helpers.MersenneTwister;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Lung {
 	private ICancerState cancerState;
 	private ICigaretteInhalationFilter cigaretteInhalationFilter;
 	private List<ILungListener> listeners;
-	private LungCell[][] lungCells;
+	private List<LungCell> lungCells;
+	//private LungCell[][] lungCells;
 
 	public Lung(){
 		this.listeners = new ArrayList<>();
-		this.lungCells = new LungCell[500][];
-		Arrays.fill(lung);
-		this.lungCells = new LungCell[500][500];
+		this.lungCells = new ArrayList<>();
+		for(int i=0; i<500*500; i++) {
+			this.lungCells.add(new LungCell());
+		}
+		this.determineNeighboringCells();
+		cancerState = new S0();
+		//this.lungCells = new LungCell[500][];
+		//this.lungCells = new LungCell[500][500];
 	}
 
 	public void setCancerState(ICancerState cancerState) {
@@ -27,24 +32,33 @@ public class Lung {
 	private void placeTarValueToRandomLungCell() {
 		MersenneTwister mersenneTwister = new MersenneTwister();
 
-		int verticalCellPosition = mersenneTwister.nextInt(0, 500);
-		int horizontalCellPosition = mersenneTwister.nextInt(0, 500);
+		int verticalCellPosition = mersenneTwister.nextInt(0, 499);
+		int horizontalCellPosition = mersenneTwister.nextInt(0, 499);
 
-		String lungCellValue = this.lungCells[verticalCellPosition][horizontalCellPosition].getCellValue();
+		LungCell currentLungCell = getLungCellByPosition(verticalCellPosition, horizontalCellPosition);
 
-		switch (lungCellValue) {
+		switch (currentLungCell.getCellValue()) {
 			case "H":
-				this.lungCells[verticalCellPosition][horizontalCellPosition].setCellValue("1T");
-				this.lungCells[verticalCellPosition][horizontalCellPosition].setHasCancer(mersenneTwister.nextBoolean(this.cancerState.cancerProbabilityForLung(1)));
+				currentLungCell.setCellValue("1T");
 				break;
 			case "1T":
-				this.lungCells[verticalCellPosition][horizontalCellPosition].setCellValue("2T");
-				this.lungCells[verticalCellPosition][horizontalCellPosition].setHasCancer(mersenneTwister.nextBoolean(this.cancerState.cancerProbabilityForLung(2)));
+				currentLungCell.setCellValue("2T");
 				break;
 			case "2T":
-				this.lungCells[verticalCellPosition][horizontalCellPosition].setCellValue("3T");
-				this.lungCells[verticalCellPosition][horizontalCellPosition].setHasCancer(mersenneTwister.nextBoolean(this.cancerState.cancerProbabilityForLung(3)));
+				currentLungCell.setCellValue("3T");
 				break;
+		}
+	}
+
+	private LungCell getLungCellByPosition(int verticalPosition, int horizontalPosition) {
+		return this.lungCells.get(verticalPosition * 500 + horizontalPosition);
+	}
+
+	public void setCancerCellsForPrepositionedCells(){
+		MersenneTwister mersenneTwister = new MersenneTwister();
+		for(LungCell lungCell : lungCells) {
+			if(!lungCell.isHasCancer())
+				lungCell.setHasCancer(mersenneTwister.nextBoolean(this.cancerState.cancerProbabilityForLung(lungCell.numberOfTarsInCell())));
 		}
 	}
 
@@ -55,7 +69,9 @@ public class Lung {
 	}
 
 	public void promoteCancerStateIfTheNumberOfInfectedCellsIsReached() {
-		if (this.countInfectedCells()/(500.0*500.0) >= this.cancerState.percentageNeededToPromoteLung()) {
+		//System.out.println("Affected Cell Number: " + this.countInfectedCells());
+		float percentageOfInfectedCells = this.countInfectedCells()/(500.0F*500.0F);
+		if (percentageOfInfectedCells >= this.cancerState.percentageNeededToPromoteLung()) {
 			this.cancerState.promote(this);
 			for(ILungListener listener : listeners) {
 				listener.lungStatusChange(this.cancerState);
@@ -67,15 +83,70 @@ public class Lung {
 		this.listeners.add(listener);
 	}
 
-	public void inhaleSmoke(List<String> cigaretteSmoke){
-	}
-
 	public void removeListener(ILungListener listener){
 		this.listeners.remove(listener);
 	}
 
-	private long countInfectedCells() {
-		return Arrays.stream(this.lungCells).flatMap(x -> Arrays.stream(x).filter(cell -> cell.isHasCancer())).count();
+	public long countInfectedCells() {
+		return this.lungCells.stream().filter(LungCell::isHasCancer).count();
+	}
+
+	private void determineNeighboringCells() {
+		for(int verticalPosition=0; verticalPosition<500; verticalPosition++) {
+			for(int horizontalPosition=0; horizontalPosition<500; horizontalPosition++) {
+				LungCell lungCell = getLungCellByPosition(verticalPosition, horizontalPosition);
+				if(verticalPosition !=0 && horizontalPosition !=0 && verticalPosition != 499 && horizontalPosition != 499) {
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition + 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition + 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition + 1));
+				} else if(verticalPosition == 0 && horizontalPosition != 0 && horizontalPosition != 499) {
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition + 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition + 1));
+				} else if(verticalPosition == 499 && horizontalPosition != 0 && horizontalPosition != 499) {
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition + 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition + 1));
+				} else if(horizontalPosition == 0 && verticalPosition != 0 && verticalPosition != 499) {
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition + 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition + 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition + 1));
+				} else if(horizontalPosition == 499 && verticalPosition != 0 && verticalPosition != 499) {
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition));
+				} else if(horizontalPosition == 0 && verticalPosition == 0) {
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition + 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition + 1));
+				} else if(horizontalPosition == 499 && verticalPosition == 499) {
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition - 1));
+				} else if(horizontalPosition == 0) {
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition + 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition - 1, horizontalPosition));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition + 1));
+				} else {
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition, horizontalPosition - 1));
+					lungCell.addNeighbouringCell(getLungCellByPosition(verticalPosition + 1, horizontalPosition - 1));
+				}
+			}
+		}
 	}
 
 	private void spreadingOfCancerCells(){

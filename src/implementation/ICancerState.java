@@ -5,4 +5,5 @@ public interface ICancerState {
 	void promote(Lung lung);
 	float cancerProbabilityForLung(int numberOfTarsInCell);
 	float percentageNeededToPromoteLung();
+	float probabilityToInfectOtherCells();
 }

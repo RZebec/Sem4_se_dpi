@@ -17,6 +17,10 @@ public class S2 implements ICancerState {
 		System.out.println("Lung has reached State S2!");
 	}
 
+	public float probabilityToInfectOtherCells() {
+		return 0.20F;
+	}
+
 	public void promote(Lung lung){
 		System.out.println("Cancer state of Lungs is reaching S3!");
 		lung.setCancerState(new S3());
@@ -24,6 +28,7 @@ public class S2 implements ICancerState {
 
 	public float cancerProbabilityForLung(int numberOfTarsInCell) {
 		switch(numberOfTarsInCell) {
+			case 0: return 0F;
 			case 1: return 0.70F;
 			case 2: return 0.75F;
 			case 3: return 0.80F;

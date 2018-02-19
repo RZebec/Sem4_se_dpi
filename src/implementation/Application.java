@@ -18,10 +18,10 @@ public class Application {
 
         MersenneTwister mersenneTwister = new MersenneTwister();
 
-        while(!brain.totalLungFailure) {
-            ICigaretteInhalationFilter cigaretteInhalationFilter = new TarsFilter();
-            List<String> tarsSmoke = cigaretteInhalationFilter.filterObjects(createCigaretteSmoke());
+        ICigaretteInhalationFilter cigaretteInhalationFilter = new TarsFilter();
+        List<String> tarsSmoke = cigaretteInhalationFilter.filterObjects(createCigaretteSmoke());
 
+        while(!brain.totalLungFailure) {
             for(String tar : tarsSmoke) {
                 boolean randomLungSelector = mersenneTwister.nextBoolean();
                 if(randomLungSelector) {
@@ -31,8 +31,14 @@ public class Application {
                 }
             }
 
+            leftLung.setCancerCellsForPrepositionedCells();
+            rightLung.setCancerCellsForPrepositionedCells();
+
             leftLung.promoteCancerStateIfTheNumberOfInfectedCellsIsReached();
             rightLung.promoteCancerStateIfTheNumberOfInfectedCellsIsReached();
+
+            //System.out.println("Affected Left Lung Cell Number: " + leftLung.countInfectedCells());
+            //System.out.println("Affected Right Lung Cell Number: " + rightLung.countInfectedCells());
         }
     }
 

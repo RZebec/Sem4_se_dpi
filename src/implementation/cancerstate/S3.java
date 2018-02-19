@@ -13,6 +13,10 @@ public class S3 implements ICancerState {
 		return 0;
 	}
 
+	public float probabilityToInfectOtherCells() {
+		return 0;
+	}
+
 	public void print(){
 		System.out.println("Lung has reached State S3!");
 	}
