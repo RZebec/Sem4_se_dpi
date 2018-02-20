@@ -33,8 +33,11 @@ public class Application {
                 }
             }
 
-            if(cigaretteCounter % 10 == 0)
+            if(cigaretteCounter % 10 == 0) {
                 System.out.println("Cigarettes Smoked: " + cigaretteCounter);
+                System.out.println("Cancer Cells in Left Lung: " + leftLung.countInfectedCells());
+                System.out.println("Cancer Cells in Right Lung: " + rightLung.countInfectedCells());
+            }
 
             leftLung.setCancerCellsForPrepositionedCells();
             rightLung.setCancerCellsForPrepositionedCells();

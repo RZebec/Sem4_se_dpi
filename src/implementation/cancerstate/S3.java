@@ -5,10 +5,6 @@ import implementation.Lung;
 
 public class S3 implements ICancerState {
 
-	public S3(){
-		this.print();
-	}
-
 	public float percentageNeededToPromoteLung() {
 		return 0;
 	}
@@ -16,11 +12,6 @@ public class S3 implements ICancerState {
 	public float probabilityToInfectOtherCells() {
 		return 0;
 	}
-
-	public void print(){
-		System.out.println("Lung has reached State S3!");
-	}
-
 
 	public void promote(Lung lung){
 	}

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class CarbonMonoxideFilter implements ICigaretteInhalationFilter {
 	public List<String> filterObjects(List<String> cigaretteSmoke){
 		return cigaretteSmoke.stream()
-				.filter(symbol -> symbol == "C")
+				.filter(symbol -> symbol.equals("C"))
 				.collect(Collectors.toList());
 	}
 }

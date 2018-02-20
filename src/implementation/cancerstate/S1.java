@@ -5,10 +5,6 @@ import implementation.Lung;
 
 public class S1 implements ICancerState {
 
-	public S1(){
-		this.print();
-	}
-
 	public float percentageNeededToPromoteLung() {
 		return 0.20F;
 	}
@@ -17,21 +13,17 @@ public class S1 implements ICancerState {
 		return 0.10F;
 	}
 
-	public void print(){
-		System.out.println("Lung has reached State S1!");
-	}
-
 	public void promote(Lung lung){
-		System.out.println(lung.getLungPosition() + " Lung is reaching cancer state S2!");
+		System.out.println(lung.getLungPosition() + " Lung reached cancer state S2!");
 		lung.setCancerState(new S2());
 	}
 
 	public float cancerProbabilityForLung(int numberOfTarsInCell) {
 		switch(numberOfTarsInCell) {
 			case 0: return 0F;
-			case 1: return 0.30F;
+			case 1: return 0.15F;
 			case 2: return 0.35F;
-			case 3: return 0.50F;
+			case 3: return 0.75F;
 		}
 		return 0;
 	}

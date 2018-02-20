@@ -9,7 +9,6 @@ import java.util.List;
 public class Lung {
 	private String lungPosition;
 	private ICancerState cancerState;
-	private ICigaretteInhalationFilter cigaretteInhalationFilter;
 	private List<ILungListener> listeners;
 	private List<LungCell> lungCells;
 
