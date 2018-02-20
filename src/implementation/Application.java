@@ -10,8 +10,8 @@ public class Application {
     public static void main(String[] args) {
         Brain brain = new Brain();
         ILungListener centralNervousSystem = new CentralNervousSystem(brain);
-        Lung leftLung = new Lung();
-        Lung rightLung = new Lung();
+        Lung leftLung = new Lung("Left");
+        Lung rightLung = new Lung("Right");
 
         leftLung.addListener(centralNervousSystem);
         rightLung.addListener(centralNervousSystem);
@@ -21,7 +21,9 @@ public class Application {
         ICigaretteInhalationFilter cigaretteInhalationFilter = new TarsFilter();
         List<String> tarsSmoke = cigaretteInhalationFilter.filterObjects(createCigaretteSmoke());
 
-        while(!brain.totalLungFailure) {
+        int cigaretteCounter = 0;
+
+        while(!brain.isTotalLungFailure()) {
             for(String tar : tarsSmoke) {
                 boolean randomLungSelector = mersenneTwister.nextBoolean();
                 if(randomLungSelector) {
@@ -31,15 +33,19 @@ public class Application {
                 }
             }
 
+            if(cigaretteCounter % 10 == 0)
+                System.out.println("Cigarettes Smoked: " + cigaretteCounter);
+
             leftLung.setCancerCellsForPrepositionedCells();
             rightLung.setCancerCellsForPrepositionedCells();
 
             leftLung.promoteCancerStateIfTheNumberOfInfectedCellsIsReached();
             rightLung.promoteCancerStateIfTheNumberOfInfectedCellsIsReached();
 
-            //System.out.println("Affected Left Lung Cell Number: " + leftLung.countInfectedCells());
-            //System.out.println("Affected Right Lung Cell Number: " + rightLung.countInfectedCells());
+            cigaretteCounter++;
         }
+
+        System.out.println("Cigarettes Smoked: " + cigaretteCounter);
     }
 
     private static List<String> createCigaretteSmoke() {

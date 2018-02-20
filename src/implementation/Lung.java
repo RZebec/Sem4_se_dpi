@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lung {
+	private String lungPosition;
 	private ICancerState cancerState;
 	private ICigaretteInhalationFilter cigaretteInhalationFilter;
 	private List<ILungListener> listeners;
 	private List<LungCell> lungCells;
-	//private LungCell[][] lungCells;
 
-	public Lung(){
+	public Lung(String lungPosition){
+		this.lungPosition = lungPosition;
 		this.listeners = new ArrayList<>();
 		this.lungCells = new ArrayList<>();
 		for(int i=0; i<500*500; i++) {
@@ -21,8 +22,10 @@ public class Lung {
 		}
 		this.determineNeighboringCells();
 		cancerState = new S0();
-		//this.lungCells = new LungCell[500][];
-		//this.lungCells = new LungCell[500][500];
+	}
+
+	public String getLungPosition() {
+		return lungPosition;
 	}
 
 	public void setCancerState(ICancerState cancerState) {
@@ -59,6 +62,9 @@ public class Lung {
 		for(LungCell lungCell : lungCells) {
 			if(!lungCell.isHasCancer())
 				lungCell.setHasCancer(mersenneTwister.nextBoolean(this.cancerState.cancerProbabilityForLung(lungCell.numberOfTarsInCell())));
+			else
+				if(mersenneTwister.nextBoolean(this.cancerState.probabilityToInfectOtherCells()))
+					lungCell.getNeighbouringCells().get(mersenneTwister.nextInt(0, lungCell.getNeighbouringCells().size()-1)).setHasCancer(true);
 		}
 	}
 
@@ -69,7 +75,6 @@ public class Lung {
 	}
 
 	public void promoteCancerStateIfTheNumberOfInfectedCellsIsReached() {
-		//System.out.println("Affected Cell Number: " + this.countInfectedCells());
 		float percentageOfInfectedCells = this.countInfectedCells()/(500.0F*500.0F);
 		if (percentageOfInfectedCells >= this.cancerState.percentageNeededToPromoteLung()) {
 			this.cancerState.promote(this);
@@ -147,9 +152,5 @@ public class Lung {
 				}
 			}
 		}
-	}
-
-	private void spreadingOfCancerCells(){
-
 	}
 }

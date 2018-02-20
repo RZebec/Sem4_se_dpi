@@ -29,8 +29,8 @@ public class LungCell {
     public int numberOfTarsInCell() {
         switch(cellValue){
             case "1T": return 1;
-            case "2T": return 1;
-            case "3T": return 1;
+            case "2T": return 2;
+            case "3T": return 3;
             default: return 0;
         }
     }

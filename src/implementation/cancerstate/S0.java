@@ -22,7 +22,7 @@ public class S0 implements ICancerState {
 	}
 
 	public void promote(Lung lung){
-		System.out.println("Cancer state of Lungs is reaching S1!");
+		System.out.println(lung.getLungPosition() + " Lung is reaching cancer state S1!");
 		lung.setCancerState(new S1());
 	}
 
@@ -32,9 +32,7 @@ public class S0 implements ICancerState {
 			case 1: return 0.10F;
 			case 2: return 0.15F;
 			case 3: return 0.25F;
-			default:
-				System.out.println("Cell cannot have 4 Tars!");
-				return 0;
 		}
+		return 0;
 	}
 }
