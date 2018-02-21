@@ -4,7 +4,7 @@ import implementation.cancerstate.S3;
 
 public class CentralNervousSystem implements ILungListener {
 	private Brain brain;
-	private boolean oneLungHastAlreadyReachedS3 = false;
+	private boolean oneLungHasAlreadyReachedS3 = false;
 
 	public CentralNervousSystem(Brain brain) {
 		this.brain = brain;
@@ -12,12 +12,12 @@ public class CentralNervousSystem implements ILungListener {
 
 	public void lungStatusChange(ICancerState newState) {
 		if(newState instanceof S3) {
-			if(oneLungHastAlreadyReachedS3) {
+			if(oneLungHasAlreadyReachedS3) {
 				this.brain.totalLungFailure();
-				oneLungHastAlreadyReachedS3 = false;
+				oneLungHasAlreadyReachedS3 = false;
 			}
 			else
-				oneLungHastAlreadyReachedS3 = true;
+				oneLungHasAlreadyReachedS3 = true;
 		}
 
 	}

@@ -18,8 +18,10 @@ public class Application {
 
         MersenneTwister mersenneTwister = new MersenneTwister();
 
+        List<String> cigaretteSmoke = createCigaretteSmoke();
+
         ICigaretteInhalationFilter cigaretteInhalationFilter = new TarsFilter();
-        List<String> tarsSmoke = cigaretteInhalationFilter.filterObjects(createCigaretteSmoke());
+        List<String> tarsSmoke = cigaretteInhalationFilter.filterObjects(cigaretteSmoke);
 
         int cigaretteCounter = 0;
 
