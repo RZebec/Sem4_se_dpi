@@ -1,29 +1,29 @@
-package implementation.cancerstate;
+package implementation.cancerstates;
 
 import implementation.ICancerState;
 import implementation.Lung;
 
-public class S1 implements ICancerState {
+public class S2 implements ICancerState {
 
 	public float percentageNeededToPromoteLung() {
-		return 0.20F;
+		return 0.40f;
 	}
 
 	public float probabilityToInfectOtherCells() {
-		return 0.10F;
+		return 0.20f;
 	}
 
 	public void promote(Lung lung){
-		System.out.println(lung.getLungPosition() + " Lung reached cancer state S2!");
-		lung.setCancerState(new S2());
+		lung.setCancerState(new S3());
+		System.out.println(lung.getLungPosition() + " Lung reached cancer state S3!");
 	}
 
 	public float cancerProbabilityForLung(int numberOfTarsInCell) {
 		switch(numberOfTarsInCell) {
-			case 0: return 0F;
-			case 1: return 0.15F;
-			case 2: return 0.35F;
-			case 3: return 0.75F;
+			case 0: return 0f;
+			case 1: return 0.25f;
+			case 2: return 0.50f;
+			case 3: return 0.80f;
 		}
 		return 0;
 	}

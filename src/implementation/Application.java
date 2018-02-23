@@ -1,7 +1,6 @@
 package implementation;
 
 import implementation.cigaretteinhalationfilters.TarsFilter;
-import implementation.helpers.MersenneTwister;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +15,6 @@ public class Application {
         leftLung.addListener(centralNervousSystem);
         rightLung.addListener(centralNervousSystem);
 
-        MersenneTwister mersenneTwister = new MersenneTwister();
-
         List<String> cigaretteSmoke = createCigaretteSmoke();
 
         ICigaretteInhalationFilter cigaretteInhalationFilter = new TarsFilter();
@@ -27,19 +24,17 @@ public class Application {
 
         while(!brain.isTotalLungFailure()) {
             for(String tar : tarsSmoke) {
-                boolean randomLungSelector = mersenneTwister.nextBoolean();
-                if(randomLungSelector) {
+                boolean randomLungSelector = Configuration.instance.mersenneTwister.nextBoolean();
+                if (randomLungSelector) {
                     leftLung.randomlyPlaceValueInLungCell(tar);
                 } else {
                     rightLung.randomlyPlaceValueInLungCell(tar);
                 }
             }
 
-            if(cigaretteCounter % 10 == 0) {
-                System.out.println("Cigarettes Smoked: " + cigaretteCounter);
-                System.out.println("Cancer Cells in Left Lung: " + leftLung.countInfectedCells());
-                System.out.println("Cancer Cells in Right Lung: " + rightLung.countInfectedCells());
-            }
+            System.out.println("Cigarettes Smoked: " + cigaretteCounter);
+            System.out.println("Cancer Cells in Left Lung: " + leftLung.countInfectedCells());
+            System.out.println("Cancer Cells in Right Lung: " + rightLung.countInfectedCells());
 
             leftLung.setCancerCellsForPrepositionedCells();
             rightLung.setCancerCellsForPrepositionedCells();
@@ -48,6 +43,12 @@ public class Application {
             rightLung.promoteCancerStateIfTheNumberOfInfectedCellsIsReached();
 
             cigaretteCounter++;
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         System.out.println("Cigarettes Smoked: " + cigaretteCounter);

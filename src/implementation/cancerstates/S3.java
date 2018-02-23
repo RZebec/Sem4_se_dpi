@@ -1,4 +1,4 @@
-package implementation.cancerstate;
+package implementation.cancerstates;
 
 import implementation.ICancerState;
 import implementation.Lung;

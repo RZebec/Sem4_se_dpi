@@ -1,6 +1,6 @@
 package implementation;
 
-import implementation.cancerstate.S3;
+import implementation.cancerstates.S3;
 
 public class CentralNervousSystem implements ILungListener {
 	private Brain brain;
@@ -8,6 +8,10 @@ public class CentralNervousSystem implements ILungListener {
 
 	public CentralNervousSystem(Brain brain) {
 		this.brain = brain;
+	}
+
+	public boolean isOneLungHasAlreadyReachedS3() {
+		return oneLungHasAlreadyReachedS3;
 	}
 
 	public void lungStatusChange(ICancerState newState) {

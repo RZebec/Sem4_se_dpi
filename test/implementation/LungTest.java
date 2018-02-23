@@ -1,9 +1,9 @@
 package implementation;
 
-import implementation.cancerstate.S0;
-import implementation.cancerstate.S1;
-import implementation.cancerstate.S2;
-import implementation.cancerstate.S3;
+import implementation.cancerstates.S0;
+import implementation.cancerstates.S1;
+import implementation.cancerstates.S2;
+import implementation.cancerstates.S3;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -40,28 +40,6 @@ public class LungTest {
 
             @Override
             public long countInfectedCells() {
-                return 75000;
-            }
-        }
-
-        Lung lung = new TestLung("Left");
-
-        lung.setCancerState(new S2());
-
-        lung.promoteCancerStateIfTheNumberOfInfectedCellsIsReached();
-
-        Assert.assertTrue("Should switch State to S3!", lung.getCancerState() instanceof S3);
-    }
-
-    @Test
-    public void Lung_PromoteCancerStateIfTheNumberOfInfectedCellsIsReached_StateS2() {
-        class TestLung extends Lung {
-            public TestLung(String lungPosition) {
-                super(lungPosition);
-            }
-
-            @Override
-            public long countInfectedCells() {
                 return 25000;
             }
         }
@@ -73,6 +51,28 @@ public class LungTest {
         lung.promoteCancerStateIfTheNumberOfInfectedCellsIsReached();
 
         Assert.assertTrue("Should switch State to S1!", lung.getCancerState() instanceof S1);
+    }
+
+    @Test
+    public void Lung_PromoteCancerStateIfTheNumberOfInfectedCellsIsReached_StateS2() {
+        class TestLung extends Lung {
+            public TestLung(String lungPosition) {
+                super(lungPosition);
+            }
+
+            @Override
+            public long countInfectedCells() {
+                return 100000;
+            }
+        }
+
+        Lung lung = new TestLung("Left");
+
+        lung.setCancerState(new S2());
+
+        lung.promoteCancerStateIfTheNumberOfInfectedCellsIsReached();
+
+        Assert.assertTrue("Should switch State to S3!", lung.getCancerState() instanceof S3);
     }
 
     @Test
@@ -96,15 +96,15 @@ public class LungTest {
 
         lung.setCancerState(new S0());
 
-        for(int i=0; i<700; i++)
+        for(int i=0; i<7000; i++)
             lung.randomlyPlaceValueInLungCell("T");
 
         lung.setCancerCellsForPrepositionedCells();
 
-        final long expectedCount = (long) (0.10 * 700.0);
+        final long expectedCount = (long) (0.10 * 7000.0);
         long infectedCellCount = lung.countInfectedCells();
 
-        Assert.assertEquals("Should have aprox. 70 infected cells", expectedCount, infectedCellCount, 15);
+        Assert.assertEquals("Should have aprox. 700 infected cells", expectedCount, infectedCellCount, 300);
     }
 
     @Test
@@ -113,15 +113,15 @@ public class LungTest {
 
         lung.setCancerState(new S1());
 
-        for(int i=0; i<700; i++)
+        for(int i=0; i<7000; i++)
             lung.randomlyPlaceValueInLungCell("T");
 
         lung.setCancerCellsForPrepositionedCells();
 
-        final long expectedCount = (long) (0.15 * 700.0);
+        final long expectedCount = (long) (0.15 * 7000.0);
         long infectedCellCount = lung.countInfectedCells();
 
-        Assert.assertEquals("Should have aprox. 70 infected cells", expectedCount, infectedCellCount, 20);
+        Assert.assertEquals("Should have aprox. 1050 infected cells", expectedCount, infectedCellCount, 300);
     }
 
     @Test
@@ -130,15 +130,15 @@ public class LungTest {
 
         lung.setCancerState(new S2());
 
-        for(int i=0; i<700; i++)
+        for(int i=0; i<7000; i++)
             lung.randomlyPlaceValueInLungCell("T");
 
         lung.setCancerCellsForPrepositionedCells();
 
-        final long expectedCount = (long) (0.25 * 700.0);
+        final long expectedCount = (long) (0.30 * 7000.0);
         long infectedCellCount = lung.countInfectedCells();
 
-        Assert.assertEquals("Should have aprox. 70 infected cells", expectedCount, infectedCellCount, 25);
+        Assert.assertEquals("Should have aprox. 2100 infected cells", expectedCount, infectedCellCount, 300);
     }
 
     @Test
