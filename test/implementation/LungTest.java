@@ -10,28 +10,6 @@ import org.junit.Test;
 public class LungTest {
 
     @Test
-    public void Lung_PromoteCancerStateIfTheNumberOfInfectedCellsIsReached_StateS0() {
-        class TestLung extends Lung {
-            public TestLung(String lungPosition) {
-                super(lungPosition);
-            }
-
-            @Override
-            public long countInfectedCells() {
-                return 50000;
-            }
-        }
-
-        Lung lung = new TestLung("Left");
-
-        lung.setCancerState(new S1());
-
-        lung.promoteCancerStateIfTheNumberOfInfectedCellsIsReached();
-
-        Assert.assertTrue("Should switch State to S2!", lung.getCancerState() instanceof S2);
-    }
-
-    @Test
     public void Lung_PromoteCancerStateIfTheNumberOfInfectedCellsIsReached_StateS1() {
         class TestLung extends Lung {
             public TestLung(String lungPosition) {
@@ -55,6 +33,28 @@ public class LungTest {
 
     @Test
     public void Lung_PromoteCancerStateIfTheNumberOfInfectedCellsIsReached_StateS2() {
+        class TestLung extends Lung {
+            public TestLung(String lungPosition) {
+                super(lungPosition);
+            }
+
+            @Override
+            public long countInfectedCells() {
+                return 50000;
+            }
+        }
+
+        Lung lung = new TestLung("Left");
+
+        lung.setCancerState(new S1());
+
+        lung.promoteCancerStateIfTheNumberOfInfectedCellsIsReached();
+
+        Assert.assertTrue("Should switch State to S2!", lung.getCancerState() instanceof S2);
+    }
+
+    @Test
+    public void Lung_PromoteCancerStateIfTheNumberOfInfectedCellsIsReached_StateS3() {
         class TestLung extends Lung {
             public TestLung(String lungPosition) {
                 super(lungPosition);
