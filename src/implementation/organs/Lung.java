@@ -1,6 +1,9 @@
-package implementation;
+package implementation.organs;
 
-import implementation.cancerstates.S0;
+import implementation.Configuration;
+import implementation.ICancerState;
+import implementation.ILungListener;
+import implementation.organs.cancerstates.S0;
 
 import java.util.ArrayList;
 import java.util.List;

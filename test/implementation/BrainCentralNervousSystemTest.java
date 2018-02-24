@@ -1,9 +1,8 @@
 package implementation;
 
-import implementation.cancerstates.S0;
-import implementation.cancerstates.S1;
-import implementation.cancerstates.S2;
-import implementation.cancerstates.S3;
+import implementation.organs.cancerstates.*;
+import implementation.organs.Brain;
+import implementation.organs.CentralNervousSystem;
 import org.junit.Assert;
 import org.junit.Test;
 

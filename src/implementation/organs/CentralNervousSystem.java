@@ -1,6 +1,8 @@
-package implementation;
+package implementation.organs;
 
-import implementation.cancerstates.S3;
+import implementation.ICancerState;
+import implementation.ILungListener;
+import implementation.organs.cancerstates.S3;
 
 /**
  * Class representing the Central Nervous System.

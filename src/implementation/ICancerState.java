@@ -1,5 +1,7 @@
 package implementation;
 
+import implementation.organs.Lung;
+
 /**
  * Interface for the cancer state.
  */

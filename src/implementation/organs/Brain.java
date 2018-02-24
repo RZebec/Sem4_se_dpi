@@ -1,4 +1,4 @@
-package implementation;
+package implementation.organs;
 
 /**
  * Class representing the Brain.

@@ -1,7 +1,7 @@
-package implementation.cancerstates;
+package implementation.organs.cancerstates;
 
 import implementation.ICancerState;
-import implementation.Lung;
+import implementation.organs.Lung;
 
 /**
  * Class for the S3 CancerState.
