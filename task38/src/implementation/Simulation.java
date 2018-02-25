@@ -39,8 +39,9 @@ public class Simulation {
             }
 
             System.out.println("Cigarettes Smoked: " + cigaretteCounter);
-            System.out.println("Cancer Cells in Left Lung: " + leftLung.countInfectedCells());
-            System.out.println("Cancer Cells in Right Lung: " + rightLung.countInfectedCells());
+            System.out.println("Left Lung: State: " + leftLung.getCancerState().toString() + ", Number of cancer cells: " + leftLung.countInfectedCells());
+            System.out.println("Right Lung: State: " + rightLung.getCancerState().toString() + ", Number of cancer cells: " + rightLung.countInfectedCells());
+            System.out.println("-------------------------------------------------------------------");
 
             leftLung.setCancerCellsForPrepositionedCells();
             rightLung.setCancerCellsForPrepositionedCells();

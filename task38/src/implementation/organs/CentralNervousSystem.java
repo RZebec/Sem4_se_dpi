@@ -36,10 +36,8 @@ public class CentralNervousSystem implements ILungListener {
 	 */
 	public void lungStatusChange(ICancerState newState) {
 		if(newState instanceof S3) {
-			if(oneLungHasAlreadyReachedS3) {
+			if(oneLungHasAlreadyReachedS3)
 				this.brain.totalLungFailure();
-				oneLungHasAlreadyReachedS3 = false;
-			}
 			else
 				oneLungHasAlreadyReachedS3 = true;
 		}

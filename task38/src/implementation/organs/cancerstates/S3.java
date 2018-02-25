@@ -30,4 +30,9 @@ public class S3 implements ICancerState {
 	public float cancerProbabilityForLung(int numberOfTarsInCell) {
 		return 0;
 	}
+
+	@Override
+	public String toString() {
+		return "S3";
+	}
 }

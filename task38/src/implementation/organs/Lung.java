@@ -66,7 +66,7 @@ public class Lung {
 	}
 	/**
 	 * Sets the cancer state of the Lung.
-	 * @param cancerState
+	 * @param cancerState The cancer state.
 	 */
 	public void setCancerState(ICancerState cancerState) {
 		this.cancerState = cancerState;

@@ -43,4 +43,9 @@ public class S1 implements ICancerState {
 		}
 		return 0;
 	}
+
+	@Override
+	public String toString() {
+		return "S1";
+	}
 }
